@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RuntimeDB — Movie Runtime Database</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">RuntimeDB</div>
+      <p class="tagline">Find movies and explore alternate runtimes.</p>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h1>Search movies</h1>
+        <form id="search-form" class="form-inline">
+          <input
+            type="text"
+            id="search-input"
+            name="query"
+            placeholder="Search by title..."
+            autocomplete="off"
+            required
+          />
+          <button type="submit">Search</button>
+        </form>
+        <div id="search-error" class="error"></div>
+      </section>
+
+      <section id="search-results" class="grid"></section>
+    </main>
+
+    <footer>
+      <p>Powered by TMDB • Alternate runtimes made simple</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

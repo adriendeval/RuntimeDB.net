@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RuntimeDB — Movie</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <a class="logo link" href="index.html">RuntimeDB</a>
+      <p class="tagline">Official runtimes and alternate cuts</p>
+    </header>
+
+    <main class="container">
+      <section id="movie-details" class="card movie-details">
+        <div class="poster-wrapper">
+          <img id="movie-poster" alt="Movie poster" />
+        </div>
+        <div class="movie-meta">
+          <h1 id="movie-title"></h1>
+          <p id="movie-overview" class="muted"></p>
+          <div class="meta-row">
+            <span class="label">Release date:</span>
+            <span id="movie-release"></span>
+          </div>
+          <div class="meta-row">
+            <span class="label">Official runtime:</span>
+            <span id="movie-runtime"></span>
+          </div>
+          <div id="movie-error" class="error"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2>Available runtimes</h2>
+            <p class="muted small">Includes theatrical runtime and all alternate versions.</p>
+          </div>
+          <button id="refresh-versions" class="ghost">Refresh</button>
+        </div>
+        <ul id="runtimes-list" class="runtime-list"></ul>
+      </section>
+
+      <section class="card">
+        <h2>Add a new version</h2>
+        <form id="add-version-form" class="form-grid">
+          <div class="form-field">
+            <label for="version_name">Version name</label>
+            <input type="text" id="version_name" name="version_name" maxlength="120" required />
+          </div>
+          <div class="form-field">
+            <label for="runtime_minutes">Runtime (minutes)</label>
+            <input
+              type="number"
+              id="runtime_minutes"
+              name="runtime_minutes"
+              min="30"
+              max="600"
+              step="1"
+              required
+            />
+          </div>
+          <div class="form-field">
+            <label for="release_year">Release year (optional)</label>
+            <input
+              type="number"
+              id="release_year"
+              name="release_year"
+              min="1888"
+              max="2100"
+              step="1"
+            />
+          </div>
+          <div class="form-field full-width">
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" name="notes" maxlength="1000" rows="3"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="submit">Save version</button>
+            <div id="form-message" class="muted small"></div>
+          </div>
+          <div id="form-error" class="error"></div>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>RuntimeDB — Build your runtime collection</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
