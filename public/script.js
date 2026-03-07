@@ -39,6 +39,7 @@ const translations = {
     movieLoadError: 'Could not load movie details.',
     runtimeLoadError: 'Failed to load runtimes.',
     langToggle: 'Français',
+    runtimeUnknown: 'Unknown',
   },
   fr: {
     tagline: 'Recherchez des films et explorez les montages alternatifs.',
@@ -81,6 +82,7 @@ const translations = {
     movieLoadError: 'Impossible de charger les détails du film.',
     runtimeLoadError: 'Impossible de charger les durées.',
     langToggle: 'English',
+    runtimeUnknown: 'Inconnue',
   },
 };
 
@@ -146,7 +148,7 @@ const applyTranslations = () => {
 const posterAlt = (title) => (currentLang === 'fr' ? `Affiche de ${title}` : `${title} poster`);
 
 const formatRuntime = (minutes) => {
-  if (!Number.isInteger(minutes) || minutes <= 0) return '—';
+  if (!Number.isInteger(minutes) || minutes <= 0) return t('runtimeUnknown');
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
   const padded = mins.toString().padStart(2, '0');
@@ -321,7 +323,11 @@ const loadMovieDetails = async () => {
     overviewEl.textContent = movie.overview || t('movieOverviewFallback');
     releaseEl.textContent = movie.release_date || t('movieReleaseUnknown');
     theatricalRuntime = movie.runtime;
-    if (movieRuntimeEl) movieRuntimeEl.textContent = formatRuntime(movie.runtime);
+    if (movieRuntimeEl) {
+      movieRuntimeEl.textContent = formatRuntime(movie.runtime);
+    } else {
+      console.warn('movie-runtime element not found in DOM');
+    }
     posterEl.src = posterUrl(movie.poster_path);
     posterEl.alt = posterAlt(movie.title);
     errorEl.textContent = '';

@@ -61,6 +61,9 @@ const fetchFromTmdb = async (endpoint, params = {}) => {
 app.get('/api/search', async (req, res) => {
   const query = sanitizeText(req.query.query || '', 100);
   const langParam = sanitizeText(req.query.lang || '', 5);
+  if (langParam && langParam !== 'fr' && langParam !== 'en') {
+    return res.status(400).json({ error: 'Invalid language parameter.' });
+  }
   const language = langParam === 'fr' ? 'fr-FR' : 'en-US';
   if (!query) {
     return res.status(400).json({ error: 'Search query is required.' });
@@ -84,6 +87,9 @@ app.get('/api/search', async (req, res) => {
 app.get('/api/movie/:tmdbId', async (req, res) => {
   const tmdbId = Number.parseInt(req.params.tmdbId, 10);
   const langParam = sanitizeText(req.query.lang || '', 5);
+  if (langParam && langParam !== 'fr' && langParam !== 'en') {
+    return res.status(400).json({ error: 'Invalid language parameter.' });
+  }
   const language = langParam === 'fr' ? 'fr-FR' : 'en-US';
   if (Number.isNaN(tmdbId)) {
     return res.status(400).json({ error: 'Invalid TMDB id.' });
