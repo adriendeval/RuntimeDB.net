@@ -371,7 +371,7 @@ const handleAddVersion = () => {
     formMessage.classList.remove('success');
 
     const formData = new FormData(form);
-    const versionName = (formData.get('version_name') || '').toString().trim();
+    const versionName = (formData.get('version_name') ?? '').toString().trim();
     const runtimeValue = formData.get('runtime_minutes');
     const releaseYear = formData.get('release_year');
     const notes = formData.get('notes');

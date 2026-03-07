@@ -60,9 +60,9 @@ const fetchFromTmdb = async (endpoint, params = {}) => {
 
 const resolveLanguage = (langParam) => {
   if (langParam && langParam !== 'fr' && langParam !== 'en') {
-    return { error: 'Invalid language parameter.' };
+    return { error: 'Invalid language parameter.', language: null };
   }
-  return { language: langParam === 'fr' ? 'fr-FR' : 'en-US' };
+  return { error: null, language: langParam === 'fr' ? 'fr-FR' : 'en-US' };
 };
 
 app.get('/api/search', async (req, res) => {
