@@ -1,0 +1,62 @@
+/*
+  Custom styles to supplement TailwindCSS CDN
+  Since we are using CDN, some custom logic for dark mode might need to be explicitly defined if not fully covered.
+  But Tailwind handles most of this via classes.
+*/
+
+:root {
+  color-scheme: light dark;
+}
+
+/* Ensure images maintain aspect ratio nicely */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Lucide icon base sizing */
+.lucide {
+  width: 1.5em;
+  height: 1.5em;
+  stroke-width: 2;
+  stroke: currentColor;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Smooth transitions for theme toggle */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Card hover effects */
+.movie-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.movie-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .movie-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Loader animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Hide scrollbar for clean look in some lists if needed */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
