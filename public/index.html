@@ -3,38 +3,105 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RuntimeDB — Movie Runtime Database</title>
+    <title>RuntimeDB — Movie runtimes reimagined</title>
+    <link rel="stylesheet" href="tailwind.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <header>
-      <div class="logo">RuntimeDB</div>
-      <p class="tagline">Find movies and explore alternate runtimes.</p>
-    </header>
+  <body class="bg-slate-950 text-slate-100 min-h-screen relative overflow-hidden">
+    <div class="glow top-10 left-0 w-80 h-80 bg-cyan-500/20"></div>
+    <div class="glow bottom-0 right-0 w-96 h-96 bg-indigo-500/25"></div>
 
-    <main class="container">
-      <section class="card">
-        <h1>Search movies</h1>
-        <form id="search-form" class="form-inline">
-          <input
-            type="text"
-            id="search-input"
-            name="query"
-            placeholder="Search by title..."
-            autocomplete="off"
-            required
-          />
-          <button type="submit">Search</button>
-        </form>
-        <div id="search-error" class="error"></div>
-      </section>
+    <div class="relative z-10">
+      <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2 text-xl font-bold">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-400/10 text-cyan-300">RD</span>
+          <span>RuntimeDB</span>
+        </a>
+        <div class="flex items-center gap-3">
+          <span id="tagline" class="hidden md:inline text-sm text-slate-300"></span>
+          <button
+            id="lang-toggle"
+            class="text-sm px-4 py-2 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition"
+          >
+            Français
+          </button>
+        </div>
+      </nav>
 
-      <section id="search-results" class="grid"></section>
-    </main>
+      <main class="max-w-6xl mx-auto px-4 sm:px-6 pb-16 space-y-10">
+        <section class="grid md:grid-cols-2 gap-8 items-center">
+          <div class="space-y-4">
+            <p class="text-sm uppercase tracking-[0.2em] text-cyan-300 font-semibold" id="hero-kicker">
+              Movie runtime intelligence
+            </p>
+            <h1 class="text-4xl sm:text-5xl font-bold leading-tight">
+              <span class="text-white">RuntimeDB</span>
+              <span class="text-cyan-300 block text-3xl sm:text-4xl" id="hero-title">Alternate runtimes, made easy.</span>
+            </h1>
+            <p class="text-slate-300 text-lg" id="hero-description">
+              Search TMDB, compare theatrical runtimes, and log official alternate cuts with clear differences.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm">SQLite</span>
+              <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm">Express</span>
+              <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm">TMDB API</span>
+              <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm">Tailwind</span>
+            </div>
+          </div>
 
-    <footer>
-      <p>Powered by TMDB • Alternate runtimes made simple</p>
-    </footer>
+          <div class="glass rounded-2xl p-6 shadow-xl space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-cyan-300 font-semibold" id="search-title">Search movies</p>
+                <p class="text-sm text-slate-400" id="search-subtitle">Find titles and open their runtime sheets.</p>
+              </div>
+              <span class="px-3 py-1 rounded-full bg-cyan-400/10 text-cyan-200 text-xs font-medium">Live TMDB</span>
+            </div>
+            <form id="search-form" class="space-y-3">
+              <div class="relative">
+                <input
+                  type="text"
+                  id="search-input"
+                  name="query"
+                  autocomplete="off"
+                  class="w-full rounded-xl border border-white/10 bg-slate-900/60 px-4 py-3 text-base text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/30"
+                  placeholder="Search by title..."
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                id="search-button"
+                class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 px-4 py-3 font-semibold text-white shadow-lg shadow-cyan-500/20 hover:from-cyan-300 hover:to-indigo-400 transition"
+              >
+                Search
+              </button>
+            </form>
+            <div id="search-error" class="text-sm text-rose-300"></div>
+          </div>
+        </section>
+
+        <section class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 id="results-title" class="text-xl font-semibold">Results</h2>
+              <p id="results-hint" class="text-sm text-slate-400">Click a movie to see its runtimes.</p>
+            </div>
+            <span class="text-xs uppercase tracking-[0.2em] text-slate-500">Runtimes • Versions • Notes</span>
+          </div>
+          <div
+            id="search-results"
+            class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          ></div>
+        </section>
+      </main>
+
+      <footer class="border-t border-white/5 bg-slate-900/40 py-6">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 text-sm text-slate-400" id="footer-text">
+          Powered by TMDB • Alternate runtimes made simple
+        </div>
+      </footer>
+    </div>
 
     <script src="script.js"></script>
   </body>

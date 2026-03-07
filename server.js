@@ -60,12 +60,14 @@ const fetchFromTmdb = async (endpoint, params = {}) => {
 
 app.get('/api/search', async (req, res) => {
   const query = sanitizeText(req.query.query || '', 100);
+  const langParam = sanitizeText(req.query.lang || '', 5);
+  const language = langParam === 'fr' ? 'fr-FR' : 'en-US';
   if (!query) {
     return res.status(400).json({ error: 'Search query is required.' });
   }
 
   try {
-    const data = await fetchFromTmdb('/search/movie', { query });
+    const data = await fetchFromTmdb('/search/movie', { query, language });
     const results = (data.results || []).map((movie) => ({
       id: movie.id,
       title: movie.title,
@@ -81,12 +83,14 @@ app.get('/api/search', async (req, res) => {
 
 app.get('/api/movie/:tmdbId', async (req, res) => {
   const tmdbId = Number.parseInt(req.params.tmdbId, 10);
+  const langParam = sanitizeText(req.query.lang || '', 5);
+  const language = langParam === 'fr' ? 'fr-FR' : 'en-US';
   if (Number.isNaN(tmdbId)) {
     return res.status(400).json({ error: 'Invalid TMDB id.' });
   }
 
   try {
-    const movie = await fetchFromTmdb(`/movie/${tmdbId}`);
+    const movie = await fetchFromTmdb(`/movie/${tmdbId}`, { language });
     res.json({
       id: movie.id,
       title: movie.title,

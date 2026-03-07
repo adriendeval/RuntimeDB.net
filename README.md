@@ -33,3 +33,5 @@ public/             # Static frontend (HTML, CSS, JS)
 - List available runtimes (theatrical + stored versions)
 - Add official alternate runtimes when they differ from the theatrical cut
 - Input validation and duplicate runtime prevention
+- Tailwind-powered modern UI
+- English / French interface toggle with TMDB language-aware requests
