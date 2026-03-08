@@ -60,3 +60,12 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Input styles - ensure proper dark mode consistency */
+input:focus, textarea:focus {
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}

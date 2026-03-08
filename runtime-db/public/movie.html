@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,12 +14,17 @@
         <div class="container mx-auto px-4 py-4 flex justify-between items-center max-w-5xl">
             <a href="/" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2 hover:opacity-80 transition">
                 <i data-lucide="film"></i>
-                RuntimeDB
+                <span class="app-title">RuntimeDB</span>
             </a>
+            <div class="flex items-center gap-2">
+            <button id="language-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition" aria-label="Toggle Language" title="EN/FR">
+                <span class="text-sm font-bold">EN</span>
+            </button>
             <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition" aria-label="Toggle Dark Mode">
                 <i data-lucide="sun" class="hidden dark:block"></i>
                 <i data-lucide="moon" class="block dark:hidden"></i>
             </button>
+        </div>
         </div>
     </header>
 
@@ -110,10 +115,11 @@
 
     <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
         <div class="container mx-auto px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
-            &copy; 2024 RuntimeDB. Data provided by TMDB.
+            <p>&copy; 2024 RuntimeDB. Data provided by TMDB.copy; 2024 RuntimeDB. Data provided by TMDB.</p>
         </div>
     </footer>
 
+    <script src="locales.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

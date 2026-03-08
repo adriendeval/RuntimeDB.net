@@ -37,12 +37,28 @@ function initTheme() {
     const toggleBtn = document.getElementById('theme-toggle');
     if (!toggleBtn) return;
 
-    // Check local storage or system preference
-    if (localStorage.theme === 'light' || (!('theme' in localStorage) && !window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.remove('dark');
-    } else {
+    // Apply saved theme or system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        if (savedTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.documentElement.classList.add('dark');
     }
+
+    toggleBtn.addEventListener('click', () => {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+}
 
     toggleBtn.addEventListener('click', () => {
         if (document.documentElement.classList.contains('dark')) {
@@ -192,12 +208,14 @@ if (isMoviePage) {
 
             // Fix issue where calendar icon was overwritten
             els.date.innerHTML = `<i data-lucide="calendar" class="inline w-4 h-4 mr-1"></i> ${movie.release_date || 'Unknown'}`;
-            els.officialRuntime.innerHTML = `<i data-lucide="clock" class="inline w-4 h-4 mr-1"></i> ${formatRuntime(movie.runtime)} (Theatrical)`;
-            els.overview.textContent = movie.overview || 'No overview available.';
+            els.officialRuntime.innerHTML = `<i data-lucide="clock" class="inline w-4 h-4 mr-1"></i> ${formatRuntime(movie.runtime)} (${typeof t === 'function' ? t('officialRuntimeLabel') : 'Theatrical'})`;
+            els.overview.textContent = movie.overview || (typeof t === 'function' ? t('movieOverviewPlaceholder') : 'No overview available.');
+            updateUIStrings();
 
             els.loading.classList.add('hidden');
-            els.detailsSection.classList.remove('hidden');
-            els.runtimesSection.classList.remove('hidden');
+            if(els.detailsSection) { els.detailsSection.classList.remove('hidden'); els.detailsSection.style.display = 'flex'; }
+            if(els.runtimesSection) els.runtimesSection.classList.remove('hidden');
+            updateUIStrings();
             initIcons();
 
             // Fetch stored versions
@@ -205,7 +223,7 @@ if (isMoviePage) {
 
         } catch (error) {
             console.error(error);
-            els.loading.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded-lg flex items-center"><i data-lucide="alert-triangle" class="mr-2"></i> Error loading movie data.</div>`;
+            els.loading.innerHTML = `<div class="bg-red-100 text-red-700 p-4 rounded-lg flex items-center"><i data-lucide="alert-triangle" class="mr-2"></i> ${error.message}</div>`;
             initIcons();
         }
     }
@@ -320,7 +338,132 @@ if (isMoviePage) {
 }
 
 // Initialization calls
+// --- LANGUAGE & THEME INITIALIZATION ---
+
+// Initialize and manage language
+function initLanguage() {
+    const savedLang = localStorage.getItem("language") || "en";
+    setLanguage(savedLang);
+
+    const langToggle = document.getElementById("language-toggle");
+    if (langToggle) {
+        langToggle.addEventListener("click", () => {
+            const current = localStorage.getItem("language") || "en";
+            const newLang = current === "en" ? "fr" : "en";
+            setLanguage(newLang);
+        });
+    }
+}
+
+function setLanguage(lang) {
+    if (typeof translations === 'undefined') return;
+    if (!translations[lang]) lang = "en";
+    localStorage.setItem("language", lang);
+
+    // Update language toggle button text
+    const langToggle = document.getElementById("language-toggle");
+    if (langToggle) {
+        langToggle.textContent = lang === "en" ? "FR" : "EN";
+    }
+
+    // Update HTML lang attribute
+    document.documentElement.lang = lang;
+
+    // Update all UI strings
+    updateUIStrings();
+}
+
+function updateUIStrings() {
+    if (typeof t === 'undefined') return;
+    // NAVBAR
+    const appTitle = document.querySelector(".app-title");
+    if (appTitle) appTitle.textContent = t("appTitle");
+
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) themeToggle.setAttribute("aria-label", t("themeLabelToggle"));
+
+    // INDEX PAGE
+    if (isIndexPage) {
+        const h1 = document.querySelector("h1");
+        if (h1) h1.textContent = t("heroTitle");
+
+        const subtitle = document.querySelector("main > div.text-center > p");
+        if (subtitle) subtitle.textContent = t("heroSubtitle");
+
+        const searchInput = document.getElementById("search-input");
+        if (searchInput) searchInput.placeholder = t("searchPlaceholder");
+
+        const noResults = document.getElementById("no-results");
+        if (noResults) {
+            noResults.innerHTML = `<i data="lucide" name="search-x" class="mx-auto w-12 h-12 mb-3 opacity-50"></i><p>${t("noResultsText")}</p>`;
+        }
+    }
+
+    // MOVIE PAGE
+    if (isMoviePage) {
+        const backButton = document.querySelector("a[href='/']");
+        if (backButton) backButton.textContent = "";
+        if (backButton) {
+            backButton.innerHTML = `<i data-lucide="arrow-left" class="mr-2 h-4 w-4"></i>${t("backButton")}`;
+        }
+
+        const runtimeTitle = document.querySelector("h2");
+        if (runtimeTitle) runtimeTitle.textContent = t("runtimeSectionTitle");
+
+        const addVersionTitle = document.querySelector("h3");
+        if (addVersionTitle) {
+            addVersionTitle.innerHTML = `<i data-lucide="plus-circle" class="text-indigo-500"></i> ${t("addVersionTitle")}`;
+        }
+
+        // Form labels
+        const labels = document.querySelectorAll("label");
+        const labelMapping = {
+            "version_name": "formVersionNameLabel",
+            "runtime_minutes": "formRuntimeLabel",
+            "release_year": "formYearLabel",
+            "notes": "formNotesLabel"
+        };
+
+        labels.forEach(label => {
+            const forAttr = label.getAttribute("for");
+            if (labelMapping[forAttr]) {
+                const text = t(labelMapping[forAttr]);
+                const required = label.querySelector("span.text-red-500");
+                label.innerHTML = `${text} ${required ? '<span class="text-red-500">*</span>' : ''}`;
+            }
+        });
+
+        // Form placeholders
+        const inputs = {
+            "version_name": "formVersionNamePlaceholder",
+            "runtime_minutes": "formRuntimePlaceholder",
+            "release_year": "formYearPlaceholder",
+            "notes": "formNotesPlaceholder"
+        };
+
+        Object.entries(inputs).forEach(([id, key]) => {
+            const input = document.getElementById(id);
+            if (input) input.placeholder = t(key);
+        });
+
+        // Submit button
+        const submitBtn = document.querySelector("button[type='submit']");
+        if (submitBtn) {
+            submitBtn.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> ${t("formSubmitButton")}`;
+        }
+    }
+
+    // FOOTER
+    const footer = document.querySelector("footer p");
+    if (footer) footer.textContent = t("footerText");
+
+    // Refresh icons after DOM updates
+    initIcons();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
+    initLanguage();
+    updateUIStrings();
     initIcons();
 });
