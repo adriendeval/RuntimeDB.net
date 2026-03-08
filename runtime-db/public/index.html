@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuntimeDB - Movie Runtimes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
+    <!-- Navbar -->
+    <header class="bg-white dark:bg-gray-800 shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center max-w-5xl">
+            <a href="/" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-2 hover:opacity-80 transition">
+                <i data-lucide="film"></i>
+                <span class="app-title">RuntimeDB</span>
+            </a>
+            <div class="flex items-center gap-2">
+            <button id="language-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition" aria-label="Toggle Language" title="EN/FR">
+                <span class="text-sm font-bold">EN</span>
+            </button>
+            <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition" aria-label="Toggle Dark Mode">
+                <i data-lucide="sun" class="hidden dark:block"></i>
+                <i data-lucide="moon" class="block dark:hidden"></i>
+            </button>
+        </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-5xl">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold mb-4">Find Alternate Runtimes</h1>
+            <p class="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">Discover and add extended editions, director's cuts, and other alternate versions of your favorite movies.</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative max-w-2xl mx-auto mb-10">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i data-lucide="search" class="text-gray-400"></i>
+                </div>
+                <input type="text" id="search-input" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm transition" placeholder="Search for a movie...">
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="hidden justify-center my-8">
+            <i data-lucide="loader-2" class="animate-spin text-indigo-500 w-8 h-8"></i>
+        </div>
+
+        <!-- Search Results Grid -->
+        <div id="search-results" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <!-- Movie cards will be inserted here dynamically -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="no-results" class="hidden text-center text-gray-500 dark:text-gray-400 mt-10">
+            <i data-lucide="search-x" class="mx-auto w-12 h-12 mb-3 opacity-50"></i>
+            <p>No movies found. Try a different search.</p>
+        </div>
+    </main>
+
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
+        <div class="container mx-auto px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+            <p>&copy; 2024 RuntimeDB. Data provided by TMDB.copy; 2024 RuntimeDB. Data provided by TMDB.</p>
+        </div>
+    </footer>
+
+    <script src="locales.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
